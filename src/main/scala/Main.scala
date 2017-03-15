@@ -28,11 +28,12 @@ class TestActor extends Actor with RestAPI {
   def receive = runRoute(route)
 }
 
-
+case class What(s: String)
 
 object TestServer {
   def main(args: Array[String]): Unit = {
     implicit val system = ActorSystem("reproduce")
+    val x = What("hello")
     val service = system.actorOf(Props(new TestActor()).withRouter(FromConfig), "restHandler")
      IO(Http) ! Http.Bind(service, "localhost", port = 1111)
   }
